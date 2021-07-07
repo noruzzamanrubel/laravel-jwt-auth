@@ -14,6 +14,7 @@ class AuthController extends Controller
      *
      * @return void
      */
+    
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
@@ -36,7 +37,7 @@ class AuthController extends Controller
         }
 
         if (!$token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized Profile'], 401);
         }
 
         return $this->createNewToken($token);
@@ -100,6 +101,13 @@ class AuthController extends Controller
     public function userProfile()
     {
         return response()->json(auth()->user());
+    }
+
+    public function delete($id)
+    {
+        $user = User::where('id', $id)->delete();
+
+        return response()->json($user);
     }
 
     /**
